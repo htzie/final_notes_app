@@ -1,0 +1,74 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: notes-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Bangkok
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks: [stack]
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: notes-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "${PHPMYADMIN_PORT:-8888}:80"
+    depends_on:
+      - mysql
+    networks: [stack]
+
+  api:
+    build: ./01_api
+    container_name: notes-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: ${API_PORT}
+      DB_HOST: mysql
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Bangkok
+    ports:
+      - "${API_PORT:-3001}:3001"
+    depends_on:
+      - mysql
+    networks: [stack]
+
+  frontend:
+    build:
+      context: ./02_frontend
+      args:
+        - API_HOST=${API_HOST:-http://api:3001}
+    container_name: notes-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - api
+    networks:
+      - stack
+
+volumes:
+  mysql_data:
+
+networks:
+  stack:
+    driver: bridge

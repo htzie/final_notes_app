@@ -1,0 +1,37 @@
+01_api/
+│
+├── index.js                      # main server
+├── db.js                         # mysql pool
+│
+├── routes/
+│    ├── auth.js                  # /auth/register + /auth/login
+│    └── notes.js                 # protected notes CRUD
+│
+├── controllers/
+│    ├── authController.js
+│    └── notesController.js
+│
+├── middleware/
+│    └── authMiddleware.js        # JWT verification
+│
+├── package.json
+├── Dockerfile                    # same as before, slightly improved
+├── .env.local                    # new env for JWT
+└── README.md (optional)
+
+02_frontend/
+  app/
+    layout.js
+    globals.css
+    page.js              (Notes page - protected)
+    login/page.js
+    register/page.js
+  lib/api.js            (API helpers)
+  lib/auth.js           (token helpers)
+  middleware.js         (route protection)
+  next.config.mjs
+  package.json
+  .env
+
+# "email": "test@test.com",
+# "password": "123456"

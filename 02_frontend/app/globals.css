@@ -1,0 +1,81 @@
+:root{
+  --teal:#bfeeea;
+  --teal-strong:#66c9be;
+  --card-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  --note-bg: #ffffff;
+  --text: #04363a;
+}
+
+html,body { height:100%; }
+body {
+  margin:0;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--teal);
+  color: var(--text);
+  -webkit-font-smoothing:antialiased;
+}
+
+.container {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 16px;
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+h1{ margin:0; color:#034f4b; }
+
+.input, textarea {
+  width:100%;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-sizing:border-box;
+}
+
+.button {
+  background: var(--teal-strong);
+  color: white;
+  padding:8px 12px;
+  border: none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.add-card {
+  background: var(--note-bg);
+  padding:14px;
+  border-radius:10px;
+  box-shadow: var(--card-shadow);
+  border:1px solid rgba(0,0,0,0.06);
+  margin-bottom:20px;
+  max-width: 700px;
+}
+
+.notes-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.note {
+  background: var(--note-bg);
+  padding:12px;
+  border-radius:10px;
+  box-shadow: var(--card-shadow);
+  min-height: 80px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.note h3 { margin:0 0 8px 0; font-size:16px; }
+.note p { margin:0; white-space:pre-wrap; color:#333; }
+
+.note .actions { margin-top:10px; display:flex; gap:8px; }
+.center-text { text-align:center; }
