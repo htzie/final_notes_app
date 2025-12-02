@@ -7,6 +7,7 @@ export default function Page() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [user, setUser] = useState(null);
 
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
@@ -52,6 +53,10 @@ export default function Page() {
 
   useEffect(() => {
     checkAuth();
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
     load();
   }, []);
 
@@ -112,19 +117,27 @@ export default function Page() {
 
   return (
     <div className="container">
-      <div className="header">
-        <h1>Your Notes</h1>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button className="button" onClick={load}>Refresh</button>
-          <button
-            className="button"
-            style={{ background: "#d9534f" }}
-            onClick={logout}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+      <div className="header" style={{ alignItems: "center" }}>
+  <h1>Your Notes</h1>
+
+  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+    {user && (
+      <span style={{ fontSize: 14, opacity: 0.8 }}>
+        Logged in as: <strong>{user.email}</strong>
+      </span>
+    )}
+
+    <button className="button" onClick={load}>Refresh</button>
+    <button
+      className="button"
+      style={{ background: "#d9534f" }}
+      onClick={logout}
+    >
+      Logout
+    </button>
+  </div>
+</div>
+
 
       <div className="add-card">
         <input
